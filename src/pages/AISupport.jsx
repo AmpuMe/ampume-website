@@ -1,10 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SimpleNavbar from '../components/SimpleNavbar';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import { useSubscribe } from '../hooks/useSubscribe';
 
 const AISupport = () => {
   const containerRef = useRef(null);
+  const { subscribe, loading, success, error } = useSubscribe();
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await subscribe(formData);
+  };
 
   useEffect(() => {
     // Generate a truly unique ID for this specific mount instance
